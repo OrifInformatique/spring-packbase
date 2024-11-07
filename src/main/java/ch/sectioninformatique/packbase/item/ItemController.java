@@ -3,6 +3,7 @@ package ch.sectioninformatique.packbase.item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /* @RestController annotation indicates that the class is a Bean.
@@ -38,5 +39,12 @@ public class ItemController {
     @GetMapping("/items")
     public Iterable<Item> getItems() {
         return itemService.getItems();
+    }
+
+    @GetMapping("/items/{id}")
+    public Item getItemById(@PathVariable Long id) {
+        /* Try to get the corresponding item, else throw an exception */
+        return itemService.getItem(id)
+            .orElseThrow(() -> new ItemNotFoundException(id));
     }
 }
